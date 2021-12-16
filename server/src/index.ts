@@ -18,7 +18,6 @@ import { createConnection } from "typeorm";
         }),
         context: ({req, res}) => ({req, res})
     })
-    await apolloServer.start()
     apolloServer.applyMiddleware({ app })
 
     app.listen(4000, () => console.log('express server started.'))
