@@ -1,5 +1,6 @@
 import { compare, hash } from "bcryptjs";
-import { Resolver, Query, Mutation, Arg, ObjectType, Field, Ctx, UseMiddleware } from "type-graphql";
+import { Resolver, Query, Mutation, Arg, ObjectType, Field, Ctx, UseMiddleware, Int } from "type-graphql";
+import {getConnection} from "typeorm";
 import { createAccessToken, createRefreshToken } from "./auth";
 import { User } from "./entity/User";
 import {isAuth} from "./isAuth";
@@ -31,6 +32,12 @@ export class UserResolver {
     }
 
     @Mutation(() => Boolean)
+    async revokeRefreshTokenForUser(@Arg('userId', () => Int) userId: number) {
+        await getConnection().getRepository(User).increment({ id: userId }, 'tokenVersion', 1)
+        return true
+    }
+
+    @Mutation(() => Boolean)
     async register(
         @Arg('email') email: string,
         @Arg('password') password: string
@@ -55,7 +62,7 @@ export class UserResolver {
         @Arg('password') password: string,
         @Ctx() { res }: MyContext
     ): Promise<LoginResponse> {
-        const user = await User.findOne({where: {email}})
+        const user = await User.findOne({ where: { email } })
         if (!user) {
             throw new Error("could not find user.");
         }
