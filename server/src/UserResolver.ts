@@ -4,6 +4,7 @@ import { createAccessToken, createRefreshToken } from "./auth";
 import { User } from "./entity/User";
 import {isAuth} from "./isAuth";
 import { MyContext } from "./MyContext";
+import {sendRefreshToken} from "./sendRefreshToken";
 
 @ObjectType()
 class LoginResponse {
@@ -65,7 +66,7 @@ export class UserResolver {
             throw new Error("bad passowrd.");
         }
 
-        res.cookie('jid', createRefreshToken(user))
+        sendRefreshToken(res, createRefreshToken(user))
         
         return {
             accessToken: createAccessToken(user)
