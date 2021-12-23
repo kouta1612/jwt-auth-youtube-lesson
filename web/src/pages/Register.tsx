@@ -9,7 +9,6 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
     return <div>
         <form onSubmit={async e => {
             e.preventDefault()
-            console.log(email, password)
             const response = await register({ 
                 variables: { 
                     email,
@@ -17,6 +16,7 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
                 }
             })
             console.log(response)
+            history.push('/')
         }}>
             <div>
                 <input value={email} placeholder="email" onChange={(e) => setEmail(e.target.value)} />
@@ -24,7 +24,7 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
             <div>
                 <input type="password" value={password} placeholder="password" onChange={(e) => setPassword(e.target.value)} />
             </div>
-            <button>submit</button>            
+            <button>register</button>            
         </form>
     </div>
 }
