@@ -43,7 +43,7 @@ import cors from 'cors'
 
         sendRefreshToken(res, createRefreshToken(user))
 
-        return res.send({ ok: true, access_token: createAccessToken(user) })
+        return res.send({ ok: true, accessToken: createAccessToken(user) })
     })
 
     await createConnection()
