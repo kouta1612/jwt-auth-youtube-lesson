@@ -10,8 +10,7 @@ export const App: React.FC = () => {
             credentials: 'include',
             method: 'POST'
         }).then(async response => {
-            const responseJson = await response.json()
-            const { accessToken } = responseJson
+            const { accessToken } = await response.json()
             setAccessToken(accessToken)
             setLoading(false)
         })

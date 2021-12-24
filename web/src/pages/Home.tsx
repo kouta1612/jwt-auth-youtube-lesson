@@ -1,11 +1,7 @@
 import React from 'react'
 import {useUsersQuery} from '../generated/graphql'
 
-interface Props {
-
-}
-
-export const Home: React.FC<Props> = () => {
+export const Home: React.FC = () => {
     const { data }= useUsersQuery({ fetchPolicy: 'network-only' })
 
     if (!data) {
