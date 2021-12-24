@@ -24,21 +24,21 @@ import cors from 'cors'
     app.post("/refresh_token", async (req, res) => {
         const token = req.cookies.jid
         if (!token) {
-            return res.send({ ok: false, access_token: "" })
+            return res.send({ ok: false, access_token: "not include token." })
         }
         let payload: any = null
         try {
             payload = verify(token, process.env.REFRESH_TOKEN_SECRET!)
         } catch (error) {
             console.log(error)
-            return res.send({ ok: false, access_token: "" })
+            return res.send({ ok: false, access_token: "invalid token." })
         }
         const user = await User.findOne({ id: payload.userId })
         if (!user) {
-            return res.send({ ok: false, access_token: "" })
+            return res.send({ ok: false, access_token: "user can't find." })
         }
         if (user.tokenVersion != payload.tokenVersion) {
-            return res.send({ ok: false, access_token: "" })
+            return res.send({ ok: false, access_token: "token version is invalid." })
         }
 
         sendRefreshToken(res, createRefreshToken(user))
