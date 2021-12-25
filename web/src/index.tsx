@@ -1,13 +1,8 @@
 import ReactDOM from 'react-dom';
-import { ApolloProvider } from '@apollo/react-hooks'
 import { getAccessToken, setAccessToken } from './accessToken';
 import { App } from './App';
-
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-import { onError } from 'apollo-link-error';
-import { ApolloLink, Observable } from 'apollo-link';
+import { onError } from "@apollo/client/link/error";
+import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink, Observable } from '@apollo/client';
 import { TokenRefreshLink } from 'apollo-link-token-refresh';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 
@@ -75,7 +70,7 @@ const client = new ApolloClient({
          console.warn('Your refresh token is invalid. Try to relogin');
          console.error(err);
       }
-    }) as any,
+    }),
     onError(({ graphQLErrors, networkError }) => {
       console.log(graphQLErrors)
       console.log(networkError)
@@ -90,7 +85,7 @@ const client = new ApolloClient({
 });
 
 ReactDOM.render(
-  <ApolloProvider client={client as any}>
+  <ApolloProvider client={client}>
     <App />
   </ApolloProvider>,
   document.getElementById('root')
